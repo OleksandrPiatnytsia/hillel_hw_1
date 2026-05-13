@@ -25,7 +25,11 @@ def get_losses_on_date(date: datetime):
     return response.json()
 
 
-if __name__ == "__main__":
+def handle_last_date():
+    return get_last().get("data", {}).get("stats")
+
+
+def handle_on_date():
 
     inputted_date = input("Input date in format YYYY-MM-DD >> ").strip()
 
@@ -42,11 +46,25 @@ if __name__ == "__main__":
         print("Invalid date value")
         exit()
 
-    # Перевірка що дата не більша за поточну
     if parsed_date.date() > datetime.now().date():
         print("Date cannot be greater than current date")
         exit()
 
-    russia_losses = get_losses_on_date(parsed_date)
+    return get_losses_on_date(parsed_date).get("data", {}).get("stats")
 
-    pprint(russia_losses.get("data", {}).get("stats"))
+def handle_exit():
+    exit()
+
+handle_map = {
+    "last": handle_last_date,
+    "on date": handle_on_date,
+    "exit": handle_exit,
+}
+
+if __name__ == "__main__":
+
+    flow = input("chose you flow, input 'last'/'on date' or 'exit' for end:")
+
+    handle_def = handle_map.get(flow, handle_exit)
+
+    pprint(handle_def())
