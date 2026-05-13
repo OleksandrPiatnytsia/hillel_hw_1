@@ -52,8 +52,10 @@ def handle_on_date():
 
     return get_losses_on_date(parsed_date).get("data", {}).get("stats")
 
+
 def handle_exit():
     exit()
+
 
 handle_map = {
     "last": handle_last_date,
